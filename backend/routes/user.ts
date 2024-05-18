@@ -1,7 +1,6 @@
 import express from 'express';
 import User from '../models/User';
 import mongoose, {mongo} from 'mongoose';
-import config from '../config';
 
 const userRouter = express.Router();
 userRouter.post('/', async (req, res, next) => {

@@ -5,6 +5,7 @@ import {ActiveConnections, Coordinate, IncomingCoordinate} from "./types";
 import mongoose from "mongoose";
 import config from "./config";
 import userRouter from "./routes/user";
+import messageRouter from "./routes/message";
 
 const app = express();
 const router = express.Router();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use(cors({origin: ['http://localhost:5173']}));
 app.use('/users', userRouter);
+app.use('/messages', messageRouter);
 
 const activeConnections: ActiveConnections = {};
 let coordinates: Coordinate[] = [];
