@@ -29,43 +29,59 @@ const Chat = () => {
         <>
             {messageLoading
                 ? <Grid container justifyContent='center' mt={2}><CircularProgress/></Grid>
-                : !messageLoading && messageList.length === 0
-                    ? <Alert severity='warning'>There are no messages in DB</Alert>
-                    : <Grid container sx={{height: '90vh', mt: 2}}>
-                        <Grid
-                            width={200}
-                            sx={{border: '2px solid black', borderRadius: 2, marginRight: 3}}
-                            item
-                        >
-                            <Typography textAlign='center' variant='h6'>Online users:</Typography>
-                        </Grid>
-                        <Grid
-                            sx={{border: '2px solid black', flex: 1, borderRadius: 2, px: 2}}
-                            container
-                            direction='column'
-                        >
-                            <Typography variant='h6'>Chat room</Typography>
-                            <Grid sx={{border: '1px solid grey', flex: 1}}>
-                                {messageList.map(message => {
+                : <Grid container sx={{mt: 2}}>
+                    <Grid
+                        width={200}
+                        sx={{border: '2px solid black', borderRadius: 2, marginRight: 3}}
+                        item
+                    >
+                        <Typography textAlign='center' variant='h6'>Online users:</Typography>
+                    </Grid>
+                    <Grid
+                        sx={{
+                            border: '2px solid black',
+                            flex: 1,
+                            borderRadius: 2,
+                            px: 2,
+                            pb: 2,
+                            maxHeight: '70%',
+                            height: '70%'
+                        }}
+                    >
+                        <Typography variant='h6'>Chat room</Typography>
+                        <Grid sx={{
+                            flex: 1,
+                            wordWrap: 'break-word',
+                            overflow: 'auto',
+                            maxHeight: '70%',
+                            boxShadow: 3,
+                            pl: 1,
+                            borderRadius: 2
+                        }}>
+                            {!messageLoading && messageList.length === 0
+                                ? <Alert severity='warning'>There are no messages in DB</Alert>
+                                : messageList.map(message => {
                                     return <Typography key={message._id}
-                                                       mt='auto'>{message.user.username}: {message.text}</Typography>;
-                                })}
-                            </Grid>
-                            <Grid container mt='auto'>
-                                <TextField
-                                    label="Message"
-                                    variant="outlined"
-                                    sx={{flex: 1, marginRight: 1}}
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    required
-                                />
-                                <IconButton onClick={sendMsg}>
-                                    <SendIcon color='primary'/>
-                                </IconButton>
-                            </Grid>
+                                                       mt='auto'><strong>{message.user.username}</strong>: {message.text}
+                                    </Typography>;
+                                })
+                            }
+                        </Grid>
+                        <Grid container mt={2}>
+                            <TextField
+                                label="Message"
+                                variant="outlined"
+                                sx={{flex: 1, marginRight: 1}}
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                required
+                            />
+                            <IconButton onClick={sendMsg}>
+                                <SendIcon color='primary'/>
+                            </IconButton>
                         </Grid>
                     </Grid>
+                </Grid>
             }
         </>
     );
