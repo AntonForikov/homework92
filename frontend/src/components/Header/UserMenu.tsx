@@ -1,6 +1,6 @@
 import {IconButton, Menu, MenuItem} from '@mui/material';
 import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../app/hooks';
 import {logout} from '../../store/user/userThunk';
 import {AccountCircle} from '@mui/icons-material';
@@ -46,10 +46,6 @@ const UserMenu: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem component={Link} to='/newArtist' onClick={handleClose}>Add Artist</MenuItem>
-        <MenuItem component={Link} to='/newAlbum' onClick={handleClose}>Add Album</MenuItem>
-        <MenuItem component={Link} to='/newTrack' onClick={handleClose}>Add Track</MenuItem>
-        <MenuItem component={Link} to='/trackHistory' onClick={handleClose}>Track History</MenuItem>
         <MenuItem onClick={logoutUser}>Log Out</MenuItem>
       </Menu>
     </>

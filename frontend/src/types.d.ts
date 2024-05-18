@@ -35,3 +35,13 @@ export interface RegisterResponse {
     user: UserFromDb;
     message: string
 }
+
+export interface MessageFromDB {
+    _id: string;
+    text: string;
+    user: {
+        _id: string;
+        username: string;
+        role: string;
+    }
+}

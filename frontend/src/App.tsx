@@ -1,6 +1,3 @@
-
-import {useCallback, useEffect, useRef, useState} from "react";
-import * as React from "react";
 import Header from "./components/Header/Header.tsx";
 import {Container} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
@@ -8,6 +5,7 @@ import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./store/user/userSlice.ts";
 import Login from "./containers/Login.tsx";
 import Register from "./containers/Register.tsx";
+import Chat from "./containers/chat.tsx";
 
 function App() {
     // const [color, setColor] = useState('#000');
@@ -111,7 +109,7 @@ function App() {
                         <Route path='/' element={
                             !user
                                 ? <h1 style={{textAlign: 'center'}}>Please login to start chat</h1>
-                                : <h1>Logged in</h1>
+                                : <Chat />
                         }/>
 
                         <Route path='/register' element={<Register />}/>
