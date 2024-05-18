@@ -4,9 +4,10 @@ import * as React from "react";
 import Header from "./components/Header/Header.tsx";
 import {Container} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./store/user/userSlice.ts";
+import Login from "./containers/Login.tsx";
+import Register from "./containers/Register.tsx";
 
 function App() {
     // const [color, setColor] = useState('#000');
@@ -78,7 +79,6 @@ function App() {
     //     }
     // };
     const user = useAppSelector(selectUser);
-    console.log(user)
 
     return (
         // <div
@@ -112,11 +112,10 @@ function App() {
                             !user
                                 ? <h1 style={{textAlign: 'center'}}>Please login to start chat</h1>
                                 : <h1>Logged in</h1>
-
                         }/>
 
-                        {/*<Route path='/register' element={<Register />}/>*/}
-                        {/*<Route path='/login' element={<Login />}/>*/}
+                        <Route path='/register' element={<Register />}/>
+                        <Route path='/login' element={<Login />}/>
                         <Route path="*" element={<h1>Not found</h1>}/>
                     </Routes>
                 </Container>

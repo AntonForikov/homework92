@@ -16,7 +16,7 @@ const Header = () => {
           </Typography>
           <Grid>
             {user
-              ? <UserMenu user={user}/>
+              ? <UserMenu />
               : <AnonymousMenu/>
             }
           </Grid>

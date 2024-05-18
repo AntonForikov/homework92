@@ -1,17 +1,12 @@
 import {IconButton, Menu, MenuItem} from '@mui/material';
-import {UserFromDb} from '../../types';
 import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../app/hooks';
 import {logout} from '../../store/user/userThunk';
 import {AccountCircle} from '@mui/icons-material';
-import Avatar from '@mui/material/Avatar';
 
-interface Props {
-  user: UserFromDb
-}
 
-const UserMenu: React.FC<Props> = ({user}) => {
+const UserMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -44,10 +39,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
         onClick={handleClick}
         color="inherit"
       >
-        {user.image
-          ? <Avatar alt={user.email} src={`http://localhost:8000/${user.image}`} />
-          : <AccountCircle />
-        }
+        <AccountCircle />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
