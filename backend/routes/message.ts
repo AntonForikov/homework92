@@ -58,7 +58,7 @@ messageRouter.ws('/ws',  (ws) => {
             Object.values(activeConnections).forEach((connection) => {
                 const outgoingMessage = {type: 'SET_USERNAME', payload: usernames};
                 connection.send(JSON.stringify(outgoingMessage));
-            })
+            });
         }
 
         if (parsedMessage.type === 'NEW_MESSAGE') {
