@@ -22,13 +22,8 @@ export interface ActiveConnections {
     [id: string]: WebSocket
 }
 
-export interface IncomingCoordinate {
+export interface IncomingMessage {
     type: string;
+    token: string;
     payload: Coordinate;
-}
-
-type Coordinate = {
-    x: number;
-    y: number;
-    color: string;
 }
