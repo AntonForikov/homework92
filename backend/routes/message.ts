@@ -52,8 +52,8 @@ messageRouter.ws('/ws',  (ws) => {
         if (parsedMessage.type === 'NEW_USER') {
             const user = await User.findOne({token: parsedMessage.token});
             if (!user) return ws.close();
+            if (!usernames.includes(parsedMessage.payload)) usernames.push(parsedMessage.payload);
 
-            usernames.push(parsedMessage.payload);
             username = parsedMessage.payload;
             Object.values(activeConnections).forEach((connection) => {
                 const outgoingMessage = {type: 'SET_USERNAME', payload: usernames};
