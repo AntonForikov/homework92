@@ -45,3 +45,8 @@ export interface MessageFromDB {
         role: string;
     }
 }
+
+export interface MessageFromWS {
+    username: string;
+    message: string;
+}

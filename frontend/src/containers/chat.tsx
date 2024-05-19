@@ -1,28 +1,59 @@
-import {Alert, CircularProgress, Grid, IconButton, Typography} from "@mui/material";
+import {CircularProgress, Grid, IconButton, Typography} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import TextField from "@mui/material/TextField";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
 import {selectMessages, selectMessagesLoading} from "../store/message/messageSlice.ts";
 import {getMessages, sendMessage} from "../store/message/messageThunk.ts";
+import {selectUser} from "../store/user/userSlice.ts";
+import {MessageFromWS} from "../types";
 
 const Chat = () => {
     const dispatch = useAppDispatch();
+    const user = useAppSelector(selectUser);
     const messageList = useAppSelector(selectMessages);
     const messageLoading = useAppSelector(selectMessagesLoading);
     const [message, setMessage] = useState('');
+    const [activeUsers, setActiveUsers] = useState<string[]>([]);
+    const [messagesFromWS, setMessagesFromWS] = useState<MessageFromWS[]>([]);
+
+    const ws = useRef<WebSocket | null>(null);
+
+    useEffect(() => {
+        ws.current = new WebSocket('ws://127.0.0.1:8000/messages/ws');
+        ws.current?.addEventListener('close', () => console.log('Connection closed'));
+
+        ws.current?.addEventListener('message', (msg) => {
+            const parsed = JSON.parse(msg.data);
+            if (parsed.type === 'WELCOME') {
+                ws.current?.send(JSON.stringify({type: 'NEW_USER', payload: user?.username, token: user?.token}));
+            }
+            if (parsed.type === 'SET_USERNAME') setActiveUsers(parsed.payload);
+            if (parsed.type === 'NEW_MESSAGE') {
+                setMessagesFromWS((prevState) => [...prevState, parsed.payload]);
+            }
+        });
+        return () => {
+            if (ws.current) ws.current?.close();
+        };
+    }, [user?.username, user?.token]);
 
     useEffect(() => {
         dispatch(getMessages());
     }, [dispatch]);
 
-    const sendMsg = () => {
+    const sendMsg = async () => {
         if (message[0] === ' ' || message === '') {
             setMessage('');
             return alert("You can't send an empty or begins from whitespace message.");
         }
-        dispatch(sendMessage(message));
+        await dispatch(sendMessage(message));
         setMessage('');
+        ws.current?.send(JSON.stringify({type: 'NEW_MESSAGE', payload: message}));
+    };
+
+    const changeMessageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMessage(e.target.value);
     };
 
     return (
@@ -32,10 +63,15 @@ const Chat = () => {
                 : <Grid container sx={{mt: 2}}>
                     <Grid
                         width={200}
-                        sx={{border: '2px solid black', borderRadius: 2, marginRight: 3}}
+                        sx={{border: '2px solid black', borderRadius: 2, mr: 3, pl: 1}}
                         item
                     >
                         <Typography textAlign='center' variant='h6'>Online users:</Typography>
+                        {activeUsers.length > 0 &&
+                            activeUsers.map((activeUser, index) => {
+                                return <Typography key={index}>{activeUser}</Typography>;
+                            })
+                        }
                     </Grid>
                     <Grid
                         sx={{
@@ -51,20 +87,35 @@ const Chat = () => {
                         <Typography variant='h6'>Chat room</Typography>
                         <Grid sx={{
                             flex: 1,
+
                             wordWrap: 'break-word',
                             overflow: 'auto',
-                            maxHeight: '70%',
+                            maxHeight: '75vh',
+                            height: '75vh',
                             boxShadow: 3,
                             pl: 1,
                             borderRadius: 2
                         }}>
-                            {!messageLoading && messageList.length === 0
-                                ? <Alert severity='warning'>There are no messages in DB</Alert>
-                                : messageList.map(message => {
-                                    return <Typography key={message._id}
-                                                       mt='auto'><strong>{message.user.username}</strong>: {message.text}
-                                    </Typography>;
-                                })
+                            {messageList.length > 0 &&
+                                messageList.map(message => {
+                                return <Typography key={message._id}
+                                                   mt='auto'><strong>{message.user.username}</strong>: {message.text}
+                                </Typography>;
+                            })}
+                            {/*{!messageLoading && messageList.length === 0*/}
+                            {/*    ? <Alert severity='warning'>There are no messages in DB</Alert>*/}
+                            {/*    : messageList.map(message => {*/}
+                            {/*        return <Typography key={message._id}*/}
+                            {/*                           mt='auto'><strong>{message.user.username}</strong>: {message.text}*/}
+                            {/*        </Typography>;*/}
+                            {/*    })*/}
+                            {/*}*/}
+                            {messagesFromWS.length > 0 &&
+                                messagesFromWS.map((message, index) =>
+                                    <Typography key={index}>
+                                        <strong>{message.username}</strong>: {message.message}
+                                    </Typography>
+                                )
                             }
                         </Grid>
                         <Grid container mt={2}>
@@ -73,7 +124,7 @@ const Chat = () => {
                                 variant="outlined"
                                 sx={{flex: 1, marginRight: 1}}
                                 value={message}
-                                onChange={(e) => setMessage(e.target.value)}
+                                onChange={changeMessageHandler}
                                 required
                             />
                             <IconButton onClick={sendMsg}>
