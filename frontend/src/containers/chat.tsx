@@ -30,7 +30,7 @@ const Chat = () => {
       }
       if (parsed.type === 'SET_USERNAME') setActiveUsers(parsed.payload);
       if (parsed.type === 'NEW_MESSAGE') {
-        setMessagesFromWS((prevState) => [...prevState, parsed.payload]);
+        setMessagesFromWS((prevState) => [parsed.payload, ...prevState]);
       }
     });
     return () => {
@@ -78,12 +78,6 @@ const Chat = () => {
           >
             <Typography variant="h6">Chat room</Typography>
             <Grid sx={styles.chat}>
-              {messageList.length > 0 &&
-                messageList.map(message => {
-                  return <Typography key={message._id}
-                                     mt="auto"><strong>{message.user.username}</strong>: {message.text}
-                  </Typography>;
-                })}
               {messagesFromWS.length > 0 &&
                 messagesFromWS.map((message, index) =>
                   <Typography key={index}>
@@ -91,6 +85,13 @@ const Chat = () => {
                   </Typography>
                 )
               }
+              {messageList.length > 0 &&
+                messageList.map(message => {
+                  return <Typography key={message._id}
+                                     mt="auto"><strong>{message.user.username}</strong>: {message.text}
+                  </Typography>;
+                })}
+
             </Grid>
             <Grid container mt={2}>
               <TextField

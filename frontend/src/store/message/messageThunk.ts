@@ -18,7 +18,7 @@ export const getMessages = createAsyncThunk(
     async () => {
         try {
            const {data} = await axiosApi.get<MessageFromDB[]>('/messages');
-           return data;
+           return data.reverse();
         } catch (e) {
             console.log(e);
         }
