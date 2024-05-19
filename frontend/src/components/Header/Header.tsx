@@ -8,15 +8,15 @@ import UserMenu from './UserMenu';
 const Header = () => {
   const user = useAppSelector(selectUser);
   return (
-    <AppBar position='static'>
+    <AppBar position="static">
       <Toolbar>
-        <Grid container justifyContent='space-between' alignItems='center'>
-          <Typography variant='h5' padding={2} component={Link} to='/' sx={{color: 'inherit', textDecoration: 'none'}}>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Typography variant="h5" padding={2} component={Link} to="/" sx={{color: 'inherit', textDecoration: 'none'}}>
             Chat
           </Typography>
           <Grid>
             {user
-              ? <UserMenu />
+              ? <UserMenu/>
               : <AnonymousMenu/>
             }
           </Grid>

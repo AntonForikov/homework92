@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {logout} from '../../store/user/userThunk';
 import {AccountCircle} from '@mui/icons-material';
-import {selectUser} from "../../store/user/userSlice.ts";
+import {selectUser} from '../../store/user/userSlice.ts';
 
 
 const UserMenu: React.FC = () => {
@@ -33,18 +33,18 @@ const UserMenu: React.FC = () => {
 
   return (
     <>
-      <Grid container alignItems='center'>
-          <Typography><strong>{user?.username}</strong></Typography>
-          <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleClick}
-              color="inherit"
-          >
-              <AccountCircle />
-          </IconButton>
+      <Grid container alignItems="center">
+        <Typography><strong>{user?.username}</strong></Typography>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={handleClick}
+          color="inherit"
+        >
+          <AccountCircle/>
+        </IconButton>
       </Grid>
       <Menu
         anchorEl={anchorEl}

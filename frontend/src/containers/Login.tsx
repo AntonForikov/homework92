@@ -12,9 +12,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {Alert, CircularProgress} from '@mui/material';
-import {selectLoginError, selectLoginLoading} from "../store/user/userSlice.ts";
-import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {login} from "../store/user/userThunk.ts";
+import {selectLoginError, selectLoginLoading} from '../store/user/userSlice.ts';
+import {useAppDispatch, useAppSelector} from '../app/hooks.ts';
+import {login} from '../store/user/userThunk.ts';
 
 
 const initialFields = {
@@ -45,7 +45,7 @@ const Login = () => {
   return (
     <>
       {loginLoading
-        ? <Grid container justifyContent='center' mt={2}><CircularProgress/></Grid>
+        ? <Grid container justifyContent="center" mt={2}><CircularProgress/></Grid>
         : <Container component="main" maxWidth="xs">
           <Box
             sx={{

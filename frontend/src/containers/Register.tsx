@@ -12,9 +12,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
-import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
-import {selectRegisterError, selectRegisterLoading} from "../store/user/userSlice.ts";
-import {register} from "../store/user/userThunk.ts";
+import {useAppDispatch, useAppSelector} from '../app/hooks.ts';
+import {selectRegisterError, selectRegisterLoading} from '../store/user/userSlice.ts';
+import {register} from '../store/user/userThunk.ts';
 
 
 const initialFields = {
@@ -57,8 +57,8 @@ const Register = () => {
   return (
     <>
       {registerLoading
-        ? <Grid container justifyContent='center' mt={2}><CircularProgress/></Grid>
-        : <Container component='main' maxWidth='xs'>
+        ? <Grid container justifyContent="center" mt={2}><CircularProgress/></Grid>
+        : <Container component="main" maxWidth="xs">
           <Box
             sx={{
               marginTop: 8,
@@ -75,7 +75,7 @@ const Register = () => {
             </Typography>
             <Box component="form" onSubmit={submitFormHandler} sx={{mt: 1}}>
               <TextField
-                type='text'
+                type="text"
                 margin="normal"
                 fullWidth
                 label="Usename"
@@ -103,7 +103,7 @@ const Register = () => {
                   label="Remember me"
                 />
                 <Grid item>
-                  <Link component={RouterLink} to='/login' variant="body2">
+                  <Link component={RouterLink} to="/login" variant="body2">
                     {'Already have an account?'}
                   </Link>
                 </Grid>
